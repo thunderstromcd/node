@@ -312,7 +312,8 @@ int main()
 	printf("用串s1取代串s2中和串t相同的不重叠的串后,串s2为: ");
 	StrPrint(s2);
 
+	printf("%p", s2);
 
-	return 0;
+ 	return 0;
 }
 
