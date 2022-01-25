@@ -85,7 +85,7 @@ int Index(String S, String T, int pos)
 		return 0;
 }
 
-/* 通过计算返回子串T的next数组。 */
+/* 通过计算返回子串T的next数组。 abcabx */
 void get_next(String T, int *next) 
 {
 	int i,k;
@@ -101,7 +101,7 @@ void get_next(String T, int *next)
 			next[i] = k;
     	} 
 		else 
-			k= next[k];	/* 若字符不相同，则k值回溯 */
+			k= next[k];	/* 若字符不相同，则k值回溯 ?????*/
   	}
 }
 

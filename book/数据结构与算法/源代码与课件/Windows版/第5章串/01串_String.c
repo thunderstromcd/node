@@ -229,6 +229,25 @@ void StrPrint(String T)
 	printf("\n");
 }
 
+void get_next(String T, int *next) 
+{
+	int i,k;
+  	i=1;
+  	k=0;
+  	next[1]=0;
+  	while (i<T[0])  /* 此处T[0]表示串T的长度 */
+ 	{
+    	if(k==0 || T[i]== T[k]) 
+		{
+      		++i;  
+			++k;  
+			next[i] = k;
+    	} 
+		else 
+			k= next[k];	/* 若字符不相同，则k值回溯 */
+  	}
+}
+
 
 int main()
 {
@@ -313,6 +332,9 @@ int main()
 	StrPrint(s2);
 
 	printf("%p", s2);
+	int next[255];
+	get_next("abcabx", next);
+	printf("%p", next);
 
  	return 0;
 }
