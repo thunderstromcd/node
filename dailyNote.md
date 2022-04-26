@@ -943,3 +943,100 @@ DOM范围`document.createRange()`，拥有的方法和属性：
 
 1. root设置为项目根目录
 2. base指定为项目部署的基础路径
+
+# 2022-4-25
+
+## 1. [HTML 网页的前10行代码解释](https://css-tricks.com/explain-the-first-10-lines-of-twitter-source-code/)
+
+### 1. Line 1: `<!DOCTYPE html>`
+
+声明doc类型，告诉浏览器文件类型
+
+### 2. Line 2: `<html dir="ltr" lang="en">`
+
+布局方向和语言
+
+### 3. Line 3: `<meta charset="utf-8">`
+
+文件编码类型
+
+## 1. 2. name和content一般以键值对出现：
+
+name值：
+
+- `application-name`：网页中所运行的应用程序的名称。
+- `author`：文档作者的名字。
+- `description`：一段简短而精确的、对页面内容的描述。一些浏览器，比如 Firefox 和 Opera，将其用作书签的默认描述。
+- `generator`：生成此页面的软件的标识符（identifier）。
+- `keywords`：与页面内容相关的关键词，使用逗号分隔。
+- `referrer`：控制由当前文档发出的请求的 HTTP [`Referer`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer) 请求头
+
+### 4. Line 4: `<meta name="viewport" content="width=device-...`
+
+响应式，width=device-width告诉浏览器使用100%的设备宽度作为视口
+
+### 5. Line 5: `<meta property="og:site_name" content="Twitt...`
+
+### 6. Line 6: `<meta name="apple-mobile-web-app-title" cont...`
+
+为苹果设备优化网站，比如apple-touch-icons和Safari pinned tab SVG。使得体验更像个原生app
+
+### 7. Line 7: `<meta name="theme-color" content="#ffffff"...`
+
+浏览器地址栏变色
+
+## 1.3 http-equiv值：
+
+```js
+1. Content-Type 设定网页字符集，说明网页制作所用语言和文字，浏览器会据此调用。
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />   //旧的HTML，不推荐
+    <meta charset="UTF-8" >   //HTML5设定网页字符集的方式
+ 
+2. X-UA-Compatible 告知浏览器以何种方式渲染当前页面
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />   //优先使用IE最新版本和Chrome
+ 
+3. pragma Cache-Control expires 各种http强缓存方式，优先级p>c>e
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control:no-cache" content="max-age=0"> //不缓存
+    <meta http-equiv="Cache-Control" content="max-age=7200"> // 7200s后缓存内容失效
+    <meta http-equiv="expires" contect="Mon,12 May 2001 00:20:00 GMT"> //网页到期时间，GMT格式，过期后必须到服务器上重新调用 
+    <meta http-equiv="Pragma" contect="no-cache"> //禁止浏览器从本地缓存中调取信息，一旦离开页面就无法从Cache中再调用
+ 
+4. refresh 让网页在一定时间内刷新，或者一定时间后跳转到其他页面
+    <meta http-equiv="refresh" content="30" >   //30s后刷新自己
+    <meta http-equiv="Refresh" contect="n;url=http://yourlink">定时让网页在指定的时间n内，跳转到页面http://yourlink；
+ 
+5. Cache-Control 避免百度等浏览器打开网页时可能对其进行转码，比如 贴广告等
+    <meta http-equiv="Cache-Control" content="no-siteapp" />   //先发送请求，与服务器确认该资源是否被更改，未被更改则使用缓存
+ 
+6. Content-Security-Policy 内容安全策略，指定浏览器智能加载content中的js代码，其他所有均拒绝
+    <meta http-equiv="Content-Security-Policy" content="default-src https://cdn.example.net; child-src 'none'; object-src 'none'">
+ 
+    base-uri: 用于限制可在页面的 <base> 元素中显示的网址。
+    child-src: 用于列出适用于工作线程和嵌入的帧内容的网址。例如：child-src https://youtube.com 将启用来自 YouTube（而非其他来源）的嵌入视频。 使用此指令替代已弃用的 frame-src 指令。
+    connect-src: 用于限制可（通过 XHR、WebSockets 和 EventSource）连接的来源。
+    font-src: 用于指定可提供网页字体的来源。Google 的网页字体可通过 font-src https://themes.googleusercontent.com 启用。
+    form-action: 用于列出可从 <form> 标记提交的有效端点。
+    frame-ancestors: 用于指定可嵌入当前页面的来源。此指令适用于 <frame>、<iframe>、<embed> 和 <applet> 标记。此指令不能在 <meta> 标记中使用，并仅适用于非 HTML 资源。
+    frame-src: 已弃用。请改用 child-src。
+    img-src: 用于定义可从中加载图像的来源。
+    media-src: 用于限制允许传输视频和音频的来源。
+    object-src: 可对 Flash 和其他插件进行控制。 
+    plugin-types: 用于限制页面可以调用的插件种类。
+ 
+    指定一个 default-src 指令替换大部分指令的默认行为:
+    <meta http-equiv="Content-Security-Policy"
+            content="default-src 'self' https://common.diditaxi.com.cn https://view.officeapps.live.com ">
+    其他指令服从default-scr的规则，还有4个关键字：
+    none 表示不执行任何匹配。
+    self'表示与当前来源（而不是其子域）匹配。
+    unsafe-inline表示允许使用内联 JavaScript 和 CSS。
+    unsafe-eval 表示允许使用类似 eval 的 text-to-JavaScript 机制。 
+ 
+7. date 原始服务器消息发出的时间
+    <meta http-equiv="date" content="Wed, 16 Feb 2011 22:34:13 GMT">
+ 
+8. location 用来重定向接收方到非请求URL的位置来完成请求或标识新的资源
+    <meta http-equiv="location" content="URL=http://www.runoob.com">
+```
+
