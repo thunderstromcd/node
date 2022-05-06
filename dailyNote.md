@@ -1040,3 +1040,117 @@ name值：
     <meta http-equiv="location" content="URL=http://www.runoob.com">
 ```
 
+# 2022-4-27
+
+## DNS解析
+
+![](./imgs/DNS.png)
+
+### `DNS`负载均衡（即`DNS`重定向）：
+
+​	`CDN`就是利用此技术。在DNS服务器中为同一个主机名配置多个IP地址，在应答DNS查询时， DNS服务器对每个查询将以DNS文件中主机记录的IP地址按顺序返回不同的解析结果，将客户端的访问 引导到不同的机器上去，使得不同的客户端访问不同的服务器，从而达到负载均衡的目的。
+
+# TCP/IP
+
+互联网（WAN）中常用的代表性的协议有IP、TCP、HTTP等，局域网（LAN）中常用协议有IPX、SPX等
+
+# 2022-4-28
+
+## 1. hover样式
+
+```css
+.hover-3 {
+    width: 200px;
+    --c: no-repeat linear-gradient(#1095c1 0 0);
+    background:
+        var(--c) calc(-100% + var(--p, 0%)) 100% / 50% var(--p, .08em),
+        var(--c) calc(200% - var(--p, 0%)) 0 / 50% var(--p, .08em);
+    transition: .3s var(--t, 0s), background-position .3s calc(.3s - var(--t, 0s));
+}
+
+.hover-3:hover {
+    --p: 100%;
+    --t: 0.3s;
+}
+
+.hover-3 {
+    width: 200px;
+    margin: auto;
+    background-image:
+        linear-gradient(#1095c1 0 0),
+        linear-gradient(#1095c1 0 0);
+    background-repeat: no-repeat;
+    background-size: 50% .08em;
+    background-position:
+        -100% 100%,
+        200% 0;
+    transition: background-size .3s, background-position .3s .3s;
+}
+
+.hover-3:hover {
+    background-size: 50% 100%;
+    background-position:
+        0 100%,
+        100% 0;
+    transition: background-size .3s .3s, background-position .3s;
+}
+```
+
+优化====>>>>
+
+```css
+.hover-3 {
+  --c: no-repeat linear-gradient(#1095c1 0 0);
+  background: 
+    var(--c) calc(-100% + var(--i, 0) * 100%) 100% / 50% calc(100% * var(--i, 0) + .08em),
+    var(--c) calc( 200% - var(--i, 0) * 100%) 0 / 50% calc(100% * var(--i, 0) + .08em);
+  transition: .3s calc(var(--i, 0) * .3s), background-position .3s calc(.3s - var(--i, 0) * .3s);
+}
+.hover-3:hover {
+  --i: 1;
+}
+```
+
+## 2. js开发工具生态
+
+### 1. 编译器
+
+编译器负责将输入的代码，转换为某种目标的输出格式。
+
+![](./imgs/envir/compiler.png)
+
+遗憾的是 swc 和 esbuild 都**不能类型检查**，它们只会尽可能的提速。如果项目正在使用 TS，最好还是在工具链中使用 tsc 来进行类型检查，不要弃用了这个能力。
+
+### 2. 打包器
+
+打包器负责将所有的源文件打包到一起，通常用于打包第三方库和 web 应用。
+
+![](./imgs/envir/packing.png)
+
+### 3. 包管理器
+
+负责管理 NPM 包依赖
+
+![](./imgs/envir/packageManager.png)
+
+### 4. 第三方库开发
+
+打包和发布第三方 NPM 包。
+
+![](./imgs/envir/thirdStore.png)
+
+在 2022 年如果想要开发一个新库，可以用它们来简化工作流。
+
+- 如果要构建 TS 库，想用 esbuild 来提速的话可以考虑 `tsup`，想要附加功能的话可以考虑 `tsdx`。
+- `microbundle` 可以用来构建 JS/TS 库。
+- `Vite` 主要用来构建 web 应用，但也支持库的构建，整体来说比较全面。
+- 对于 monorepos，`nx` 未来可期。
+
+### 5. web应用开发
+
+帮助开发者屏蔽掉所有细节，来更好地构建现代 web 应用。
+
+![](./imgs/envir/web.png)
+
+
+
