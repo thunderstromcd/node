@@ -77,7 +77,61 @@ lock文件，主要用来锁默认的依赖版本，最好让别人的依赖和�
 
 
 
+### 1.2 Npx
 
+> Node 自带 npm 模块，所以可以直接使用 npx 命令。万一不能用，就要手动安装一下。
+
+##### 调用项目安装的模块
+
+**一、npx 想要解决的主要问题，就是调用项目内部安装的模块**
+
+npx 的原理很简单，就是运行的时候，会到`node_modules/.bin`路径和环境变量`$PATH`里面，检查命令是否存在。
+
+由于 npx 会检查环境变量`$PATH`，所以系统命令也可以调用。
+
+ ```bash
+ # 等同于 ls
+ $ npx ls
+ ```
+
+#### 避免全局安装模块
+
+除了调用项目内部模块，npx 还能避免全局安装的模块。比如，`create-react-app`这个模块是全局安装，npx 可以运行它，而且不进行全局安装。
+
+##### **-p**
+
+`-p`参数用于指定 npx 所要安装的模块，所以上一节的命令可以写成下面这样。
+
+##### -c 参数
+
+如果 npx 安装多个模块，默认情况下，所执行的命令之中，只有第一个可执行项会使用 npx 安装的模块，后面的可执行项还是会交给 Shell 解释。
+
+> ```bash
+> $ npx -p lolcatjs -p cowsay 'cowsay hello | lolcatjs'
+> # 报错
+> ```
+
+上面代码中，`cowsay hello | lolcatjs`执行时会报错，原因是第一项`cowsay`由 npx 解释，而第二项命令`localcatjs`由 Shell 解释，但是`lolcatjs`并没有全局安装，所以报错。
+
+`-c`参数可以将所有命令都用 npx 解释。有了它，下面代码就可以正常执行了。
+
+> ```bash
+> $ npx -p lolcatjs -p cowsay -c 'cowsay hello | lolcatjs'
+> ```
+
+`-c`参数的另一个作用，是将环境变量带入所要执行的命令。举例来说，npm 提供当前项目的一些环境变量，可以用下面的命令查看。
+
+> ```bash
+> $ npm run env | grep npm_
+> ```
+
+`-c`参数可以把这些 npm 的环境变量带入 npx 命令。
+
+> ```bash
+> $ npx -c 'echo "$npm_package_name"'
+> ```
+
+上面代码会输出当前项目的项目名。
 
 ### 2.yarn
 
@@ -150,6 +204,22 @@ npm 脚本的原理非常简单。每当执行`npm run`，就会自动新建一�
 比较特别的是，`npm run`新建的这个 Shell，会将当前目录的`node_modules/.bin`子目录加入`PATH`变量，执行结束后，再将`PATH`变量恢复原样。
 
 这意味着，当前目录的`node_modules/.bin`子目录里面的所有脚本，都可以直接用脚本名调用，而不必加上路径。比如，当前项目的依赖里面有 Mocha，只要直接写`mocha test`就可以了。
+
+
+
+# husky
+
+`husky` 是一个为 git 客户端增加 `hook` 的工具。安装后，它会自动在仓库中的 `.git/` 目录下增加相应的钩子；比如 `pre-commit` 钩子就会在你执行 `git commit` 的触发。
+
+
+
+# commitizen
+
+安装了这个依赖包之后，在项目中执行一下命令就可正常使用默认的`git cz`
+
+```bash
+commitizen init cz-conventional-changelog --save --save-exact
+```
 
 
 
