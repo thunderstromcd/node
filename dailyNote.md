@@ -914,6 +914,30 @@ DOM范围`document.createRange()`，拥有的方法和属性：
 
 即通过模板 ref 或者 `$parent` 链获取到的组件的公开实例，必须要通过`defineExpose`暴露出去
 
+
+
+### 4.1 style v-bind将span变成红色
+
+```vue
+<template>
+  <span> 有开始循环了-开端 </span>  
+</template>
+<script setup>
+  import { reactive } from 'vue'
+  const state = reactive({
+    color: 'red'
+  })
+</script>
+<style scoped>
+  span {
+    /* 使用v-bind绑定state中的变量 */
+    color: v-bind('state.color');
+  }  
+</style>
+```
+
+
+
 --------------------------`vue3`
 
 
